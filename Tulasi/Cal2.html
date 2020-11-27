@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Calculator</title>
+    <script src="Scripts/cal2.js"></script>
+    <link href="styles/Calc.css" rel="stylesheet" />
+</head>
+<body>
+    <table class="log">
+        <tr>
+            <td>
+                <label>Log</label>
+            </td>
+        <tr>
+            <td><textarea style="overflow-y: scroll; height: 100px;" id="displayLog" rows="30" cols="30"></textarea></td>
+        </tr>
+    </table>
+    <h1> Calculator</h1>
+    <table border=2 align="center">
+        <tr>
+            <td colspan=4>
+                <input style="text-align: right" type="text" id="result" disabled />
+            </td>
+        </tr>
+        <tr>
+
+            <td><input type="button" value="M+" name="memory_add" onclick="memory_p()" />
+            <td><input type="button" value="M-" name="memory_subract" onclick="memory_s()" />
+            <td><input type="button" value="MR" name="memory_read" onclick="memory_r()" />
+            <td><input type="button" value="MS" name="memory_store" onclick="mStore()" />
+        </tr>
+        <tr>
+            <td><input type="button" value="%" name="percent" onclick="percent()">
+            <td><input type="button" value="x&#50;" name="square" onclick="sqr()" />
+            <td><input type="button" value="&radic;" name="sq_root" onclick="sqrRT()" />
+            <td><input type="button" value="&#960" name="pi" onclick="pi()" />
+        </tr>
+        <tr>
+            <td><input type="button" name="b1" value="1" onclick="calculator('1')" />
+            <td><input type="button" name="b2" value="2" onclick="calculator('2')" />
+            <td><input type="button" name="b3" value="3" onclick="calculator('3')" />
+            <td><input type="button" name="add" value="+" onclick="calculator('+')" />
+        </tr>
+        <tr>
+            <td><input type="button" name="b4" value="4" onclick="calculator('4')" />
+            <td><input type="button" name="b5" value="5" onclick="calculator('5')" />
+            <td><input type="button" name="b6" value="6" onclick="calculator('6')" />
+            <td><input type="button" name="sub" value="-" onclick="calculator('-')" />
+        </tr>
+        <tr>
+            <td><input type="button" name="b7" value="7" onclick="calculator('7')" />
+            <td><input type="button" name="b8" value="8" onclick="calculator('8')" />
+            <td><input type="button" name="b9" value="9" onclick="calculator('9')" />
+            <td><input type="button" name="multi" value="*" onclick="calculator('*')" />
+        </tr>
+        <tr>
+            <td><input type="button" name="b0" value="0" onclick="calculator('0')" />
+            <td><input type="button" name="deci" value="." onclick="calculator('.')" />
+            <td><input class="resButton" type="button" value="=" onclick="solve()" /> </td>
+            <td><input type="button" name="div" value="/" onclick="calculator('/')" />
+        </tr>
+        <tr>
+            <td><input type="button" name="can" value="C" onclick="clr()" />
+            <td><input type="button" name="clear" value="CE" onclick="clrAll()" /></td>
+            <td colspan="2"><input type="button" value="Bksp" name="bspace" onclick="deleteChar(this)" /></td>
+
+
+        </tr>
+    </table>
+    <table class="Memory">
+        <tr>
+            <td>
+                <label> Memory History </label>
+            </td>
+        </tr>
+        <tr>
+            <td><textarea style="overflow-y: scroll; height: 100px;" id="MemoryStore" rows="30" cols="30"></textarea></td>
+        </tr>
+    </table>
+
+</body>
+</html>

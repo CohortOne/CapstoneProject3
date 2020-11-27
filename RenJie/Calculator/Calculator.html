@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Calculator</title>
+
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="StyleSheet3.css" rel="stylesheet" />
+
+</head>
+<body>
+    <div id="special">
+        <form id="calculator">
+            <table id="table">
+                <tr>
+                    <td colspan="4">
+                        <textarea id="display" type="text" class="myclass" disabled></textarea> 
+                    </td>
+                </tr>
+                <tr>
+                    <td><input id="ms" type="button" class="btn btn-info" value="MS" onclick=" mS()"/></td>
+                    <td><input id="mr" type="button" class="btn btn-info mButtons" value="MR" disabled onclick="LoadLastFromLocalStorage()"/></td>
+                    <td><input id="mplus" type="button" class="btn btn-info mButtons" value="M+" disabled onclick="mPlus()"/></td>
+                    <td><input id="mminus" type="button" class="btn btn-info mButtons" value="M-" disabled onclick="mMinus()"/></td>
+                </tr>
+                <tr>
+                    <td><input id="one" type="button" class="btn btn-info" value="1" onclick=" if (lengthChecker()) { calculator.display.value += '1'} " /></td>
+                    <td><input id="two" type="button" class="btn btn-info" value="2" onclick=" if (lengthChecker()) { calculator.display.value += '2'}" /></td>
+                    <td><input id="three" type="button" class="btn btn-info" value="3" onclick="if(lengthChecker()){calculator.display.value += '3'};" /></td>
+                    <td><input id="plus" type="button" class="btn btn-info" value="+" onclick="if(lengthChecker()){calculator.display.value += '+'};" /></td>
+                </tr>
+                <tr>
+                    <td><input id="four" type="button" class="btn btn-info" value="4" onclick="if(lengthChecker()){calculator.display.value += '4'};" /></td>
+                    <td><input id="five" type="button" class="btn btn-info" value="5" onclick="if(lengthChecker()){calculator.display.value += '5'};" /></td>
+                    <td><input id="six" type="button" class="btn btn-info" value="6" onclick="if(lengthChecker()){calculator.display.value += '6'};" /></td>
+                    <td><input id="minus" type="button" class="btn btn-info" value="-" onclick=" if (lengthChecker()) { calculator.display.value += '-'};" /></td>
+                </tr>
+                <tr>
+                    <td><input id="seven" type="button" class="btn btn-info" value="7" onclick="if(lengthChecker()){calculator.display.value += '7'};" /></td>
+                    <td><input id="eight" type="button" class="btn btn-info" value="8" onclick="if(lengthChecker()){calculator.display.value += '8'};" /></td>
+                    <td><input id="nine" type="button" class="btn btn-info" value="9" onclick="if(lengthChecker()){calculator.display.value += '9'};" /></td>
+                    <td><input id="mutiply" type="button" class="btn btn-info" value="*" onclick="if(lengthChecker()){calculator.display.value += '*'};" /></td>
+                </tr>
+                <tr>
+                    <td><input id="correct" type="button" class="btn btn-info" value="CE" onclick="calculator.display.value = calculator.display.value.slice(0, -1)" /></td>
+                    <td><input id="zero" type="button" class="btn btn-info" value="0" onclick="if(lengthChecker()){calculator.display.value += '0'};" /></td>
+                    <td><input id="equal" type="button" class="btn btn-info" value="=" onclick="  equalPress(); " /></td>
+                    <td><input id="divide" type="button" class="btn btn-info" value="/" onclick="if(lengthChecker()){calculator.display.value += '/'};" /></td>
+                </tr>
+                <tr>
+                    <td>
+                        <input id="clearall" type="button" class="btn btn-info" value="C" onclick="calculator.display.value = '' " />
+                    </td>
+                </tr>
+            </table>
+        </form>
+
+        <div id="tabcontainer">
+            <div class="tab">
+                <button class="tablinks" onclick="openTabs(event, 'logs')">Logs</button>
+                <button class="tablinks" onclick="openTabs(event, 'memory')">Memory</button>
+            </div>
+
+            <div id="logs" class="tabcontent" style="display: none; overflow: auto; width:100%; height:180px;">
+                <div id="logsbox">
+                </div>
+                
+                <input id="logclear" class="clearing" type="button" value="Clear Logs" onclick="this.blur();clearLogs();" />
+            </div>
+
+            <div id="memory" class="tabcontent" style="display: none; overflow: auto; width:100%; height:180px;">
+                <div id="membox">
+                </div>
+                <input id="memclear" class="clearing" type="button" value="Clear Memory" onclick="this.blur();clearMemory();" />
+            </div>
+       
+
+        </div>
+        <div id="spacefiller">
+            <p>Copyright 2020, RJ Enterprises</p>
+        </div>
+
+    <script src="Scripts/CalJS.js"></script>
+</body>
+</html>
+

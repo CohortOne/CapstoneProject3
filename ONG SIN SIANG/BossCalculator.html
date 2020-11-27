@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>BOSS</title>
+    <script src="Scripts/CalLogic.js"></script>
+    <script src="Scripts/FunctionalLogic.js"></script>
+    <link href="Styles/FashionDesign.css" rel="stylesheet" />
+
+</head>
+<body>
+    <div class="BossCal">May The Force Be With You</div>
+    <table border="1">
+        <tr>
+
+            <td colspan="3"><input type="text" id="result" /></td>
+            <!-- clr() function will call clr to clear all value -->
+            <td><input type="button" value="C" onclick="clr()" /> </td>
+        </tr>
+       
+           
+
+        <tr>
+            <td><input id="Button1" type="button" value="1" onclick="dis('1')" /></td>
+            <td><input id="Button2" type="button" value="2" onclick="dis('2')" /></td>
+            <td><input id="Button3" type="button" value="3" onclick="dis('3')" /></td>
+            <td><input id="Minus" type="button" value="-" onclick="dis('-')" /></td>
+        </tr>
+        <tr>
+            <td><input id="Button4" type="button" value="4" onclick="dis('4')" /></td>
+            <td><input id="Button5" type="button" value="5" onclick="dis('5')" /></td>
+            <td><input id="Button6" type="button" value="6" onclick="dis('6')" /></td>
+            <td><input id="Divide" type="button" value="/" onclick="dis('/')" /></td>
+        </tr>
+
+        <tr>
+            <td><input id="Button7" type="button" value="7" onclick="dis('7')" /></td>
+            <td><input id="Button8" type="button" value="8" onclick="dis('8')" /></td>
+            <td><input id="Button9" type="button" value="9" onclick="dis('9')" /></td>
+            <td><input id="Plus" type="button" value="+" onclick="dis('+')" /></td>
+        </tr>
+
+        <tr>
+            <td><input id="Button0" type="button" value="0" onclick="dis('0')" /></td>
+            <td><input id="Dot" type="button" value="." onclick="dis('.')" /></td>
+            <td><input id="Equals" type="button" value="=" onclick="solve()" /></td>
+            <td><input id="Multiply" type="button" value="*" onclick="dis('*')" /></td>
+        </tr>
+
+
+    </table>
+    <div class="memoryFunctions">
+        <input id="functionBtn1" type="button" value="MC" onclick="memreset()"/>
+        <input id="functionBtn2" type="button" value="MR" onclick="memrecall()" />
+        <input id="functionBtn3" type="button" value="M+" onclick="memplus()" />
+        <input id="functionBtn4" type="button" value="M-" onclick="memminus()"/>
+        <input id="functionBtn5" type="button" value="MS" onclick="memstore()" />
+        
+        <textarea id="memoryStoreViewer" textalign= "right" rows="10" cols="20" disabled></textarea>
+
+
+
+    </div>
+    <div id="history"></div>
+    <input id="Text1" type="text" value="All Rights Reserved.Trademark Registered By BOSS CORP" />
+</body>
+</html>
+

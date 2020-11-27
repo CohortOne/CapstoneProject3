@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=30" />
+    <title></title>
+    <link href="CalcSS.css" rel="stylesheet" />
+    <script src="CalcJS.js"></script>
+</head>
+
+
+<body>
+    <div class="container">
+        <div class="floatLeft" style="width: 4%; height: 100%; float: left">
+            <table name="MM"></table>
+            <tr>
+                <td>
+                    <p>Memory Store:</p>
+                </td>
+            </tr>
+            <tr rowspan='15'>
+                <td>
+                    <textarea id="Memorylogs" rows="8" cols="5"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="clearallm" type="button" value="MC" onclick="clrallm();" />
+                </td>
+            </tr>
+        </div>
+
+
+        <div class="floatcentre">
+            <table name="calc" style= "width: 5%; height: 100%; float: left; display: inline-block">
+                <tr>
+                    <td colspan="3"><input id="answer" type="text" name="result" value="" /></td>
+                    <td><input id="equal" type="button" value="=" onclick="execute();" /></td>
+                </tr>
+                <tr>
+                    <td><input class="symButton" id="mrecall" type="button" value="MR" onclick="mr();" /></td>
+                    <td><input class="symButton" id="mplus" type="button" value="M+" onclick="madd();" /></td>
+                    <td><input class="symButton" id="mminus" type="button" value="M-" onclick="msubtract();" /></td>
+                    <td><input class="symButton" id="mstore" type="button" value="MS" onclick="ms();" /></td>
+                </tr>
+                <tr>
+                    <td><input class="numButton" id="one" type="button" value="1" onclick="disp('1');" /></td>
+                    <td><input class="numButton" id="two" type="button" value="2" onclick="disp('2');" /></td>
+                    <td><input class="numButton" id="three" type="button" value="3" onclick="disp('3');" /></td>
+                    <td><input class="numButton" id="divide" type="button" value="/" onclick="disp('/');" /></td>
+                </tr>
+                <tr>
+                    <td><input class="numButton" id="four" type="button" value="4" onclick="disp('4');" /></td>
+                    <td><input class="numButton" id="five" type="button" value="5" onclick="disp('5');" /></td>
+                    <td><input class="numButton" id="six" type="button" value="6" onclick="disp('6');" /></td>
+                    <td><input class="numButton" id="multiply" type="button" value="*" onclick="disp('*');" /></td>
+                </tr>
+                <tr>
+                    <td><input class="numButton" id="seven" type="button" value="7" onclick="disp('7');" /></td>
+                    <td><input class="numButton" id="eight" type="button" value="8" onclick="disp('8');" /></td>
+                    <td><input class="numButton" id="nine" type="button" value="9" onclick="disp('9');" /></td>
+                    <td><input class="numButton" id="minus" type="button" value="-" onclick="disp('-');" /></td>
+                </tr>
+                <tr>
+                    <td><input class="numButton" id="point" type="button" value="." onclick="disp('.');" /></td>
+                    <td><input class="numButton" id="zero" type="button" value="0" onclick="disp('0');" /></td>
+                    <td><input class="numButton" id="plus" type="button" value="+" onclick="disp('+');" /></td>
+                    <td><input class="resButton" id="clear" type="reset" value="C" onclick="erase();" /></td>
+                </tr>
+            </table>
+        </div>
+
+
+        <div class="floatRight">
+            <table name="history" style="width: 4%; height: 100%; float:left; display: inline-block"></table>
+            <tr>
+                <td>
+                    <p>History:</p>
+                </td>
+            </tr>
+            <tr rowspan='15'>
+                <td>
+                    <textarea id="Textlogs" rows="8" cols="5">   </textarea> 
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="clearall" type="reset" value="Clear log" onclick="clrall();" />
+                </td>
+            </tr>
+
+        </div>
+    </div>
+</body>
+</html>

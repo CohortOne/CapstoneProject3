@@ -1,0 +1,9 @@
+﻿article {
+    border-spacing: 20px;
+    border: 2px;
+    border-color: ivory;
+    color: white;
+    padding: 15px 15px;
+    text-decoration: none;
+    display: inline-block;
+}

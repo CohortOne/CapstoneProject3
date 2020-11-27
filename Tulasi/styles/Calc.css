@@ -1,0 +1,52 @@
+﻿
+input[type=button] {
+    font-size: 30px;
+    width: 50px;
+    height: 50px;
+    color: saddlebrown;
+    width: 100%
+}
+
+    input[type=button]:hover {
+        background-color: mediumseagreen;
+    }
+
+input[ name="can"] {
+    background-color: red;
+    color: black;
+}
+
+input[type=text] {
+    background-color: bisque;
+    font-family: cursive;
+    font-size: xx-large;
+    margin-left: 3px;
+    margin-bottom: inherit;
+    width: 300px;
+    height: 42px;
+}
+.log {
+    background-color: #d9d9d9;
+    position: fixed;
+    top: 25%;
+    left: 15%
+}
+.Memory {
+    background-color: #d9d9d9;
+    position: fixed;
+    top: 25%;
+    right: 15%
+}
+
+h1 {
+    margin-bottom: 10px;
+    color: green;
+    font-family: Verdana;
+    font-size: x-large;
+    text-align: center;
+}
+
+table {
+    border: 2px solid black;
+    background-color: grey;
+}

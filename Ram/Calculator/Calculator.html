@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link href="CalStyle.css" rel="stylesheet" />
+    <script src="CalLogic.js"></script>
+    <script src="MemoryLogic.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Aldrich' rel='stylesheet'>
+</head>
+<body>
+    <div id="box">
+        <form name="calculator">
+            <p>CASIO</p>
+            <p1>fx-96SG PLUS</p1>
+
+            <input id="answer" type="text" disabled />
+
+            <br>
+            <input type="button" id="memoryplus" value="M+" onclick="memoryP()" />
+            <input type="button" id="memoryminus" value="M-" onclick="memoryM()" />
+            <input type="button" id="memoryread" value="MR" onclick="memoryR()" />
+            <input type="button" id="memorystore" value="MS" onclick="memoryS()" />
+            <input type="button" id="memoryclear" value="MC" onclick="memoryC()" />
+
+            <br>
+            <input type="button" id="seven" value="7" onclick="dis('7')" />
+            <input type="button" id="eight" value="8" onclick="dis('8')" />
+            <input type="button" id="nine" value="9" onclick="dis('9')" />
+            <input type="button" value="DEL" onclick="backspace()" />
+            <input type="button" id="clear" value="C" onclick="clr();" />
+            <br>
+            <input type="button" id="four" value="4" onclick="dis('4')" />
+            <input type="button" id="five" value="5" onclick="dis('5')" />
+            <input type="button" id="six" value="6" onclick="dis('6')" />
+            <input type="button" id="multiply" value="x" onclick="dis('*')" />
+            <input type="button" id="divide" value="/" onclick="dis('/')" />
+            <br>
+            <input type="button" id="one" value="1" onclick="dis('1')" />
+            <input type="button" id="two" value="2" onclick="dis('2')" />
+            <input type="button" id="three" value="3" onclick="dis('3')" />
+            <input type="button" id="plus" value="+" onclick="dis('+')" />
+            <input type="button" id="minus" value="-" onclick="dis('-')" />
+            <br>
+            <input type="button" id="zero" value="0" onclick="dis('0')" />
+            <input type="button" id="decimal" value="." onclick="dis('.')" />
+            <input type="button" id="equal" value="=" onclick="equation();" />
+            <input type="button" name="button1" id="clearhistory" value="Clear Log" onclick="clearlog();" />
+            <br>
+
+            
+        </form>
+        
+        
+
+    </div>
+   
+    
+    <textarea id="log" rows="2" cols="20">  </textarea>
+    <textarea id="memoryBox" rows="2" cols="20"></textarea>
+    
+
+</body>
+</html>

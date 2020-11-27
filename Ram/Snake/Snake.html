@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Snake Game</title>
+    <link href="https://fonts.googleapis.com/css?family=Antic+Slab" rel="stylesheet">
+
+    <style>
+        #gameCanvas {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #score {
+            text-align: center;
+            font-size: 140px;
+            font-family: 'Antic Slab', serif;
+        }
+        p {
+            text-align: center;
+            font-size: 14px;
+            font-family: 'Antic Slab', serif;
+            top: 80%;
+        }
+        #restartBtn {
+            position:absolute;
+            text-align: center;
+            font-size: 14px;
+            font-family: 'Antic Slab', serif;
+            top: 250px;
+            left:850px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="score">0</div>
+    <canvas id="gameCanvas" width="300" height="300"></canvas>
+    <button type="button" id="restartButton" onclick="gameRestart">RESTART</button>
+    <p>
+        <label for="GameLevel" class="gameLevel">Game Level:</label>
+        <select name="GameLevel" id="GameLevel">
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="expert">Expert</option>
+        </select>
+    </p>
+
+    <script src="SnakeJS.js"></script>
+
+</body>
+
+
+</html> 

@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>OwnCalculator</title>
+    <script src="OCLogic.js"></script>
+    <link href="OCStyle.css" rel="stylesheet" />
+</head>
+<body>
+    
+    <table>
+        <tr>
+            <td><input id="dval" type="text" /></td>
+        </tr>
+        <tr>
+            <td><input id="mrc" type="button" value="MRC" onclick="mRec()" /></td>
+            <td><input id="madd" type="button" value="M+" onclick="mPlus()"/></td>
+            <td><input id="msub" type="button" value="M-" onclick="mSub()"/></td>
+            <td><input id="mstore" type="button" value="Ms" onclick="mStore()"/></td>
+            
+        </tr>
+        <tr>
+            <td><input id="mclear" type="button" value="MC" onclick="clrAll()" /></td>
+            <td><input id="square" type="button" value="X^2" onclick="Sq()" /></td>
+            <td><input id="back" type="button" value="Back" onclick="back()" /></td>
+            <td><input id="add" type="button" value="+" onclick="Get('+')" /></td>
+        </tr>
+        <tr>
+            <td><input id="Button7" type="button" value="7" onclick="Get(7)" /></td>
+            <td><input id="Button8" type="button" value="8" onclick="Get(8)" /></td>
+            <td><input id="Button9" type="button" value="9" onclick="Get(9)" /></td>
+            <td><input id="sub" type="button" value="-" onclick="Get('-')" /></td>
+        </tr>
+        <tr>
+            <td><input id="Button4" type="button" value="4" onclick="Get(4)" /></td>
+            <td><input id="Button5" type="button" value="5" onclick="Get(5)" /></td>
+            <td><input id="Button6" type="button" value="6" onclick="Get(6)" /></td>
+            <td><input id="multi" type="button" value="*" onclick="Get('*')" /></td>
+        </tr>
+        <tr>
+            <td><input id="Button1" type="button" value="1" onclick="Get(1)" /></td>
+            <td><input id="Button2" type="button" value="2" onclick="Get(2)" /></td>
+            <td><input id="Button3" type="button" value="3" onclick="Get(3)" /></td>
+            <td><input id="divide" type="button" value="/" onclick="Get('/')" /></td>
+        </tr>
+        <tr>
+            <td><input id="clear" type="button" value="CLR" onclick="clr()" /></td>
+            <td><input id="Button0" type="button" value="0" onclick="Get(0)" /></td>
+            <td><input id="dot" type="button" value="." onclick="Get('.')" /></td>
+            <td><input id="equal" type="button" value="=" onclick="Compute()" /></td>
+         </tr>
+         <tr>
+             <td><button onclick="clrAll2()" style="width: 100%;">History</button></td>
+             <td><textarea style="text-align:right;" id="history" rows="10" cols="20"></textarea>
+            </td>
+            <td><header>Memory Logs</header></td>
+            <td><textarea id="mlog" rows="10" cols="20"></textarea>
+            </td>
+         </tr>
+    </table>
+    
+
+
+</body>
+</html>

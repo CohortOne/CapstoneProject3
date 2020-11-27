@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Snake Game</title>
+    <link href="https://fonts.googleapis.com/css?family=Antic+Slab" rel="stylesheet">
+    <link href="StyleSheet1.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div id="special">
+        <div id="title">
+            Snake
+        </div>
+        <div id="scoreholder">
+            <div id="score">Score:<br />0</div>
+            <div id="highscore">High Score:<br />0</div>
+        </div>
+        <div id="game">
+            <canvas id="gameCanvas" width="300" height="300"></canvas>
+        </div>
+        <label id="speed">Difficulty: 
+            <select id="selectSpd" onchange="switchdiff(); this.blur();">
+                <option value="easy">Easy</option>
+                <option selected="selected" value="medium">Medium</option>
+                <option value="hard">Hard</option>
+            </select>
+        </label>
+    </div>
+    <script src="SnakeJS.js"></script>
+</body>
+
+
+</html>

@@ -1,0 +1,24 @@
+﻿#gameboard{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    background-color:burlywood;
+    border:solid black;
+
+}
+
+#ScoreBoard{
+text-align:center;
+color:black;
+font-size:140px;
+font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+}
+
+#pause {
+    background-color:crimson;
+    color:azure;
+    font-style:oblique;
+    font-weight:200;
+}

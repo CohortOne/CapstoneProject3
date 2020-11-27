@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Calculator</title> 
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans&display=swap" rel="stylesheet"> <!--links google font-->
+    <link href="Styles/calculator-style.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="calculator-grid">
+        <div class="output">
+            <input id="display" class="displayScreen" type="text" disabled />
+        </div>
+        <button id="Ms" onclick="memoryStore()">MS</button>
+        <button id="Mr" onclick="memoryRepeat()" disabled>MR</button>
+        <button id="M-" onclick="memorySub()" disabled>M-</button>
+        <button id="M+" onclick="memoryPlus()" disabled>M+</button>
+        <button id="Ce" onclick="backSpace()">CE</button>
+        <button class="span-two" id="Clear" onclick="Clear()">AC</button>
+        <button onclick="getNumber('/')" value="/">/</button>
+        <button onclick="getNumber('1')" value="1">1</button>
+        <button onclick="getNumber('2')" value="2">2</button>
+        <button onclick="getNumber('3')" value="3">3</button>
+        <button onclick="getNumber('*')" value="*">*</button>
+        <button onclick="getNumber('4')" value="4">4</button>
+        <button onclick="getNumber('5')" value="5">5</button>
+        <button onclick="getNumber('6')" value="6">6</button>
+        <button onclick="getNumber('+')" value="+">+</button>
+        <button onclick="getNumber('7')" value="7">7</button>
+        <button onclick="getNumber('8')" value="8">8</button>
+        <button onclick="getNumber('9')" value="9">9</button>
+        <button onclick="getNumber('-')" value="-">-</button>
+        <button onclick="getNumber('.')" value=".">.</button>
+        <button onclick="getNumber('0')" value="0">0</button>
+        <button class="span-two" onclick="solveNumber()">=</button>
+        <div class="memory-log">
+            <div class="Trasaction"><p>Transaction Log</p></div>
+            <textarea id="TransLog" rows="18" cols="20" class="transactionArea" disabled></textarea>
+            <button value="Clear Log" onclick="clearTransLog()">Clear Log</button>
+            <div class="Memory"><p>Memory Log</p></div>
+            <textarea id="MemoryLog" rows="18" cols="20" class="MemoryArea" disabled></textarea>
+            <button value="Clear Memory" onclick="clearMemLog()">Clear Memory</button>
+        </div>
+    </div>
+    <script src="Scripts/calculator.js"></script>
+</body>
+</html>

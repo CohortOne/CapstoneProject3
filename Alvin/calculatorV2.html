@@ -1,0 +1,300 @@
+﻿<!-- CALCULATOR
+    Coded done by Ng, date: Sep29,2020.
+    0. Display shown stanard keyboard with display, and two memory, and history log.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+
+        <script>
+            var UniC = "";          // Unicode from keypress
+            var valPre = "";        // chars Numbers keyin
+            var lastCalSign = "";
+            var valBef = 0;         // result
+            var logMem = "";
+            var logMemNext = "";
+
+            var valDis = 0;         // cumulative digits display on screen;
+            var logHist = "History: " + "<Br />";
+
+            addEventListener("keypress", function (event) {
+                var UniC = event.which || event.keyCode;
+                myOpe(UniC);
+            }
+            );
+
+            function myOpe(UniC) {
+                buttonColor(UniC);
+                
+                /* UniC: 0-9 digits, . dot(46), and %(37) */
+                if ((UniC >= 48 && UniC <= 57) || UniC == 46 || UniC == 37) {
+                    var valKeyDn = String.fromCharCode(UniC);
+                    
+                    // prior to add in dot ".", return if have previous dot"."
+                    if (UniC == 46) {
+                        let n = valPre.indexOf(".");
+                        if (n != -1) {
+                            return
+                        }
+                    }
+
+                    valPre += valKeyDn;
+                    
+                    if (UniC == 37) {
+                        myFuncE(37);
+                    }
+                    
+                    valDis = valPre;
+                }
+                
+                /* UniC: operation  /, *, -, +, =(61) */
+                else if ((UniC >= 42 && UniC <= 47) || UniC == 61) {
+                    valDis += String.fromCharCode(UniC);
+                    if (lastCalSign != "") {
+                        logHist += valBef + String.fromCharCode(lastCalSign)
+                        myFuncE(lastCalSign);
+                        valDis = valBef;
+                        logHist += valPre + " = " + valDis + "<br/>";
+                    } else {
+                        valBef = parseFloat(valPre);
+                    }
+
+                    valPre = '';
+                    lastCalSign = UniC;
+                    
+                    if (UniC == 61) {
+                        lastCalSign = "";
+                    }
+                }
+                /* saved to memory MS, strl-S  */
+                else if (UniC == 19) {
+                    myFuncMem(UniC);
+                }
+                /* Memory button, or keypress*/
+                else if (UniC == 18 || UniC == 13 || UniC == 16 || UniC == 3
+                        || UniC == 80 || UniC == 77) {
+                    if (logMem !== "")
+                        myFuncMem(UniC);
+                }
+                /* AC: All clear */
+                else if (UniC == 97) {
+                    varGlobal = "";
+                    valBef = 0;
+                    valPre = "";
+                    valDis = "";
+                    lastCalSign = "";
+                }
+                else {
+                    console.log("alert!");
+                }
+                document.getElementById("displayArea").innerHTML = valDis;
+                document.getElementById("logHist").innerHTML = logHist;
+                console.log("valDis " + valDis);
+            }
+
+            function MemColor(memColor) {
+                document.getElementById("memC").style.backgroundColor = memColor;
+                document.getElementById("memR").style.backgroundColor = memColor;
+                document.getElementById("memM").style.backgroundColor = memColor;
+                document.getElementById("memP").style.backgroundColor = memColor;
+            }
+
+            let preSym = "sym42";
+            function buttonColor(UniC) {
+                document.getElementById(preSym).style.backgroundColor = "ghostwhite";
+                if ((UniC >= 42 && UniC <= 45) || UniC == 47 || UniC == 61) {
+                    symId = "sym" + UniC;
+                    document.getElementById(symId).style.backgroundColor = "orange";
+                    preSym = symId;
+                }
+            }
+
+            /* operation of calculation. */
+            function myFuncE(calSign) {
+                var nuMStrIn = parseFloat(valPre);
+                switch (calSign) {
+                    case 42: // multiplication
+                        valBef = valBef * nuMStrIn;
+                        break;
+                    case 43: // addition
+                        valBef = valBef + nuMStrIn;
+                        break;
+                    case 45: // minus
+                        valBef = valBef - nuMStrIn;
+                        break;
+                    case 46: // dot . 
+                        break;
+                    case 47: // division
+                        valBef = valBef / nuMStrIn;
+                        break;
+                    case 37: // Percentage
+                        nuMStrIn = nuMStrIn / 100;
+                        valPre = nuMStrIn;
+                        break;
+                }
+            }
+
+            /* memory methods, and update history  */
+            function myFuncMem(calSign) {
+                switch (calSign) {
+                    case 19:            /*ctrl-s : MS : memory store */
+                        if (logMem != 0) {
+                            logMemNext = logMem;
+                        }
+                        logMem = parseFloat(valDis);
+                        MemColor("ghostwhite");
+                        break;
+                    case 18:            /*ctrl-r : MR : memory recall */
+                        valPre = logMem;
+                        valDis = valPre;
+                        break;
+                    case 13:            /*ctrl-m : M- : memory minus */
+                        lastCalSign = 45;
+                        valBef = logMem;
+                        myFuncE(lastCalSign);
+                        logMem = valBef;
+                        break;
+                    case 16:            /*ctrl-p : M+ : memory plus */
+                        lastCalSign = 43; 
+                        valBef = logMem;
+                        myFuncE(lastCalSign);
+                        logMem = valBef;
+                        break;
+                    case 3:             /*ctrl-c : MC : memory clear */
+                        logMem = "";
+                        logMemNext = "";
+                        MemColor("grey");
+                        break;
+
+                    case 77: /* shift-m : M- : memory minus  for Second Mem */
+                        lastCalSign = 45; 
+                        valBef = logMemNext;
+                        myFuncE(lastCalSign);
+                        logMemNext = valBef;
+                        break;
+                    case 80: /* shift-p : M+ : memory plus for Second Mem */
+                        lastCalSign = 43; 
+                        valBef = logMemNext;
+                        myFuncE(lastCalSign);
+                        logMemNext = valBef;
+                }
+                document.getElementById("logMem").innerHTML = logMem;
+                document.getElementById("logMemNext").innerHTML = logMemNext;
+            }
+
+            /* on-click Button operation */
+            function myFuncC() {
+                var var1 = document.getElementById("nItem").value;
+                myOpe(var1);
+            }
+        </script>
+
+        <style>
+            .grid-container {
+                display: grid;
+                grid-template-columns: auto auto auto auto;
+                grid-gap: 10px;
+                padding: 10px;
+                width: 300px;
+                left: 30px;
+                border: 1px solid;
+            }
+
+            .grid-container > div {
+                background-color: lightcyan;
+                text-align: center;
+                padding: 15px 0;
+                font-size: 15px;
+                border: 1px solid;
+                height: 15px;
+            }
+
+            .displayNum {
+                grid-column: 1 / span 4;
+            }
+
+            .number0 {
+                grid-column: 1 / span 2;
+            }
+
+            .memColor {
+                background-color: grey;
+            }
+            #wholeBox {
+                position: absolute;
+                width: 200px;
+                font-size: 16px;
+                height: 350px;
+                box-sizing: border-box;
+                border: 1px solid;
+                left: 350px;
+                top: 50px;
+                text-align: right;
+                padding: 10px;
+            }
+            #logHist {
+                position: relative;
+                height: 210px;
+                overflow-y: scroll;
+            }
+            #logMem {
+                position: relative;
+                height: 50px;
+                padding: 10px;
+                box-sizing: border-box;
+                border: 1px solid;
+            }
+            #logMemNext {
+                position: relative;
+                height: 50px;
+                padding: 10px;
+                box-sizing: border-box;
+                border: 1px solid;
+            }
+            .smallDisp {
+                position: relative;
+                width: 30px;
+                font-size: 10px;
+                height: 16px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="grid-container">
+            <div id="displayArea" class="displayNum"></div>
+            <div><input type="button"           value="AC" onclick="myOpe(97)"></div>
+            <div><input type="button" id="memC" class="memColor" value="MC" onclick="myOpe(3)" ></div>
+            <div><input type="button" id="memR" class="memColor" value="MR" onclick="myOpe(18)" ></div>
+            <div><input type="button"           value="%" onclick="myOpe(37)" ></div>
+            <div><input type="button"           value="MS" onclick="myOpe(19)" ></div>
+            <div><input type="button" id="memM" class="memColor" value="M-" onclick="myOpe(13)" ></div>
+            <div><input type="button" id="memP" class="memColor" value="M+" onclick="myOpe(16)" ></div>
+            <div><input type="button" id="sym47" value="/" onclick="myOpe(47)" ></div>
+            <div><input type="button"           value="7" onclick="myOpe(55)" ></div>
+            <div><input type="button"           value="8" onclick="myOpe(56)" ></div>
+            <div><input type="button"           value="9" onclick="myOpe(57)" ></div>
+            <div><input type="button" id="sym42" value="*" onclick="myOpe(42)" ></div>
+            <div><input type="button"           value="4" onclick="myOpe(52)" ></div>
+            <div><input type="button"           value="5" onclick="myOpe(53)" ></div>
+            <div><input type="button"           value="6" onclick="myOpe(54)" ></div>
+            <div><input type="button" id="sym45" value="-" onclick="myOpe(45)" ></div>
+            <div><input type="button"           value="1" onclick="myOpe(49)" ></div>
+            <div><input type="button"           value="2" onclick="myOpe(50)" ></div>
+            <div><input type="button"           value="3" onclick="myOpe(51)" ></div>
+            <div><input type="button" id="sym43" value="+" onclick="myOpe(43)" ></div>
+            <div class="number0"><input type="button" value="0" onclick="myOpe(48)" ></div>
+            <div><input type="button"           value="." onclick="myOpe(46)" ></div>
+            <div><input type="button" id="sym61"  value="=" onclick="myOpe(61)" ></div>
+        </div>
+        <section id="wholeBox">
+            <div id="logMem">AC:a, MC:^c, MR:^r, MS:^s, M-:^m, M+:^p</div>
+            <div id="logMemNext"> M-:shift-m, M+:shift-p</div>
+            <input type="button" id="numberMP" class="smallDisp" onclick="myOpe(80)" value="M+">
+            <input type="button" id="numberMM" class="smallDisp" onclick="myOpe(77)" value="M-">
+            <div id="logHist" class="textAlgin"></div>
+        </section>
+    </body>
+
+</html>

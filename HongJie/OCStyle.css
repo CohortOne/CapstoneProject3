@@ -1,0 +1,17 @@
+﻿input[type=button] {
+    background-color: lightgray;
+    border: thin;
+    padding: 15px 32px;
+    text-align: center;
+    font-size:larger;
+    width: 100%;
+}
+input[type=text] {
+    width: 200%;
+    text-align: right;
+    font-size: x-large;
+    padding: 15px 32px;
+}
+input[type=button]:hover{
+    background-color: lightgreen;
+}

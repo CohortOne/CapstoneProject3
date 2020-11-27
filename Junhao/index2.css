@@ -1,0 +1,48 @@
+﻿.box {
+    background-color: blueviolet;
+    position: fixed;
+    top: 25%;
+    left: 25%;
+}
+
+.title {
+    margin-bottom: 10px;
+    text-align: center;
+    width: 210px;
+    color: grey;
+    /**        border: solid black 2px; **/
+}
+
+.numButton {
+    background-color: blueviolet;
+    color: white;
+    font-weight: 900;
+    font-weight: bolder
+    /**           border: solid black 2px; **/
+    width:100%
+}
+
+.symButton {
+    background-color: grey;
+    color: black;
+    font-weight: 900;
+    align-content: center;
+    font-weight: bolder
+    /**           border: solid black 2px; **/
+    width:100%
+}
+
+.resButton {
+    background-color: grey;
+    color: greenyellow;
+    font-weight: bolder font-weight: 900;
+    /**           border: solid black 2px; **/
+    width: 100%
+}
+
+.m{
+    margin-top: 10px; //moves your table 10pixels down 
+   margin-left:10px; //moves your table 10pixels right
+   background-color: grey;
+}
+

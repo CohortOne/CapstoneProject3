@@ -1,0 +1,116 @@
+﻿body {
+    font-family:Arial;
+    color:tan;
+}
+
+#box {
+    position: relative;
+    width: 480px;
+    border: 2px solid black;
+    border-radius: 12px;
+    margin: 0px auto;
+    padding: 20px 20px 100px 20px;
+    top: 300px;
+    background: #383f4d;
+}
+p {
+    margin-top: 0px;
+    text-align:center;
+    font-size: 30px;
+    font: bold;
+    color:white;
+    font-family: 'Aldrich';
+    float: left;
+    font-weight: bold;
+}
+p1 {
+    margin-top: 0px;
+    text-align: center;
+    font-size: 15px;
+    font: bold;
+    color: white;
+    font-family: 'Aldrich';
+    float: right;
+    font-weight: bold;
+    font-style:italic;
+}
+
+
+
+
+#answer {
+    position: relative;
+    display: block;
+    width: 85%;
+    height: 30px;
+    margin: auto;
+    font-size: 20px;
+    border: 1px solid black;
+    background: #5d8768;
+    padding-left:30px;
+    margin-right: 30px;
+    color:black;
+}
+#answer:hover {
+    opacity:0.5;
+}
+
+input[type=button] {
+    background: black;
+    width: 15%;
+    font-size: 20px;
+    font-weight: 900;
+    border-radius: 7px;
+    margin-left: 13px;
+    margin-top: 10px;
+    color:tan;
+    font-weight:bold;
+}
+input[type=button]:hover {
+    opacity: 0.8;
+    color: silver;
+}
+
+input[name=button1] {
+    background: black;
+    width: 34%;
+    font-size: 20px;
+    font-weight: 900;
+    border-radius: 7px;
+    margin-left: 13px;
+    margin-top: 10px;
+    color: tan;
+    font-weight: bold;
+}
+
+    input[name=button1]:hover {
+        opacity: 0.8;
+        color: silver;
+    }
+
+#log {
+    overflow-y: scroll;
+    position: absolute;
+    width: 200px;
+    border: 2px solid black;
+    border-radius: 12px;
+    margin: 0px auto;
+    top: 308px;
+    background: #383f4d;
+    right: 400px;
+    height: 280px;
+    text-align: left;
+}
+#memoryBox {
+    overflow-y: scroll;
+    position: absolute;
+    width: 200px;
+    border: 2px solid black;
+    border-radius: 12px;
+    margin: 0px auto;
+    top: 308px;
+    background: #383f4d;
+    left: 400px;
+    height: 280px;
+    text-align: left;
+}

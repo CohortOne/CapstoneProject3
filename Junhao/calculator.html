@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link href="index2.css" rel="stylesheet" />
+</head>
+<body>
+    <table id="m" height="335px" border="2" style="display: inline-block; text-align: center;">
+        <tr>
+            <td>
+                <label> Memory Store </label>
+            </td>
+        </tr>
+        <tr rowspan='15'>
+            <td>
+                <textarea style="overflow-y: scroll;  height:auto;  text-align:right; " id="mStore" name="name" rows="15" cols="30" disabled>    </textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input style='padding: 15px' type="button" value="Memory Clear" onclick="document.getElementById('mStore').value = ''" />
+            </td>
+        </tr>
+    </table>
+
+    <table height="100%" border="2" style="padding: 40px; display: inline-block; text-align: center;">
+        <tr style='padding: 80px'>
+            <td colspan="5" rowspan="2" style='padding: 20px'>
+                <input style="text-align: right" type="text" id="result" disabled />
+            </td>
+            <td>
+                <input class="clrButton" type="button" value="C" onclick="clr()" />
+            </td>
+        </tr>
+        <tr>
+            <td style='padding: 5px'>
+                <input class="clrButton" type="button" value="CE" onclick="clrAll()" />
+            </td>
+        </tr>
+        <tr>
+            <td><input class="symButton" type="button" id='MRec' value="MR" onclick="mRec()" disabled /> </td>
+            <td><input class="symButton" type="button" id='MPlus' value="M+" onclick="mPlus()" disabled /> </td>
+            <td><input class="symButton" type="button" id='MSub' value="M-" onclick="mSub()" disabled /> </td>
+            <td><input class="symButton" type="button" id='MStore' value="MS" onclick="mStore()" /> </td>
+        </tr>
+        <tr>
+            <td><input class="numButton" type="button" value="7" onclick="btn('7')" /> </td>
+            <td><input class="numButton" type="button" value="8" onclick="btn('8')" /> </td>
+            <td><input class="numButton" type="button" value="9" onclick="btn('9')" /> </td>
+            <td><input class="symButton" type="button" value="/" onclick="btn('/')" /> </td>
+        </tr>
+        <tr>
+            <td><input class="numButton" type="button" value="4" onclick="btn('4')" /> </td>
+            <td><input class="numButton" type="button" value="5" onclick="btn('5')" /> </td>
+            <td><input class="numButton" type="button" value="6" onclick="btn('6')" /> </td>
+            <td><input class="symButton" type="button" value="-" onclick="btn('-')" /> </td>
+
+        </tr>
+        <tr>
+            <td><input class="numButton" type="button" value="1" onclick="btn('1')" /> </td>
+            <td><input class="numButton" type="button" value="2" onclick="btn('2')" /> </td>
+            <td><input class="numButton" type="button" value="3" onclick="btn('3')" /> </td>
+            <td><input class="symButton" type="button" value="*" onclick="btn('*')" /> </td>
+        </tr>
+        <tr>
+            <td><input class="numButton" type="button" value="0" onclick="btn('0')" /> </td>
+            <td><input class="symButton" type="button" value="." onclick="btn('.')" /> </td>
+            <td><input class="resButton" type="button" value="=" onclick="solve()" /> </td>
+            <td><input class="symButton" type="button" value="+" onclick="btn('+')" /> </td>
+        </tr>
+        <tr>
+            <table>
+                <td>
+                    <label> Calculation History </label>
+                </td>
+        </tr>
+        <tr rowspan='15'>
+            <td>
+                <textarea style="overflow-y: scroll;  height:auto;  text-align:right; " id="log" name="name" rows="15" cols="30" disabled>    </textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input style='padding: 15px' type="button" value="History Clear" onclick="clrAll()" />
+            </td>
+        </tr>
+    </table>
+    <script src="index1.js"></script>
+</body>
+</html>

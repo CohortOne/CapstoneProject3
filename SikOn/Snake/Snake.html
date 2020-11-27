@@ -1,0 +1,859 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Snake Game</title>
+    <link href="https://fonts.googleapis.com/css?family=Antic+Slab" rel="stylesheet">
+    <style>
+        #gameCanvas {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+			float: right;
+            transform: translate(-50%, -50%);
+        }
+
+        #score {
+            text-align: center;
+            font-size: 14px;
+            font-family: 'Antic Slab', serif;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+		.hidden {
+			display: none;
+		}
+    </style>
+</head>
+
+<body>
+    <table>
+        <tr><th colspan="3">Quite Smart Snake</th></tr>
+        <tr>
+            <th>Game Scores</th>
+            <th>Current: <div id="score">0</div></th>
+            <th>High: <div id="highScore">0</div></th>
+        </tr>
+        <tr>
+            <th colspan="2"><input type="button" Id="frmbGamePause" value="Pause Game" onclick="chgGameOption('P');" /></th>
+            <th>Game is<div id="gameRunning">running</div></th>
+        </tr>
+        <tr>
+            <th><input type="button" value="Speed Up" onclick="chgGameOption('F');" /></th>
+            <th><input type="button" value="Slow Down" onclick="chgGameOption('S');" /></th>
+            <th><div id="gameSpeed">100</div>mini-sec between moves</th>
+        </tr>
+        <tr>
+            <th><input type="button" value="Longer" onclick="chgGameOption('+');" /></th>
+            <th><input type="button" value="Shorter" onclick="chgGameOption('-');" /></th>
+            <th>Minimum snake length: <div id="gameSnake">5</div></th>
+        </tr>
+        <tr>
+            <th><input type="button" value="Headlight" onclick="chgGameOption('H');" /></th>
+            <th>Head light is<div id="gameHeadLight">off</div></th>
+            <th>Current snake length<div id="gameSnakeLen"></div></th>
+        </tr>
+        <tr>
+            <th><input type="button" value="Upgrade" onclick="chgGameOption('B');" /></th>
+            <th><input type="button" value="Downgrade" onclick="chgGameOption('b');" /></th>
+            <th>Beacon is <div id="gameBeacon">off</div></th>
+        </tr>
+        <tr>
+            <th><input type="button" value="Upgrade" onclick="chgGameOption('D');" /></th>
+            <th><input type="button" value="Downgrade" onclick="chgGameOption('d');" /></th>
+            <th>Beacons <div id="gameDrawBeacon">and guidelines are</div>drawn</th>
+        </tr>
+    </table>
+
+    <canvas id="gameCanvas" width="600" height="600" onclick="mouseClick(event);"></canvas>
+
+</body>
+
+<script>
+    const CANVAS_BORDER_COLOUR = 'black';
+    const CANVAS_BACKGROUND_COLOUR = "grey";
+    const SNAKE_COLOURH = 'pink';
+    const SNAKE_COLOUR1 = 'yellow';
+    const SNAKE_COLOUR2 = 'yellow';
+    const SNAKE_COLOUR0 = 'black';
+    const SNAKE_HEADLIGHT = 'white';
+    const SNAKE_BORDER_COLOUR = 'darkgreen';
+    const BEACON_COLOUR = 'lightblue';
+    const BEACON_BORDER_COLOUR = 'darkblue';
+    const FOOD_COLOUR = 'red';
+    const FOOD_BORDER_COLOUR = 'darkred';
+
+ 
+    // number of min-sec between each main() interation
+	let gamePulse = parseInt(document.getElementById("gameSpeed").textContent);
+    // initiaal length of snake.  Increasing this number mid way can allow the snake 
+	// to grow just by advancing unti this length is reached or exceeded
+    let snakeInitLengh = parseInt(document.getElementById("gameSnake").textContent);
+	
+	// intialise make beacons invisible
+    let drawBeacons = 2;
+	
+    let snake = [];        // create empty snake
+    let beacon = [];       // create empty beacons
+    let beaconAssured = [];
+    let beaconSmart = [];
+
+    let score = 0;         // create score
+    // When set to true the snake is changing direction
+    let changingDirection = false;
+    
+    let foodX;  // Food x-coordinate
+    let foodY;  // Food y-coordinate
+	let xNextFood = -1;  // x-coordinate of a manual food to be planted
+	let yNextFood = -1;  // y-coordinate of a manual food to be planted
+
+    let dx = 10;  // Horizontal velocity
+    let dy = 0;  // Vertical velocity
+
+    // Get the canvas element
+    const gameCanvas = document.getElementById("gameCanvas");
+    // Return a two dimensional drawing context
+    const ctx = gameCanvas.getContext("2d");
+    initGame();
+    initSureBeacons();
+
+    // Start game
+    main();
+    // Create the first food location
+    createFood();
+    // Call changeDirection whenever a key is pressed
+    document.addEventListener("keydown", changeDirection);
+
+
+
+    /**
+     * Main function of the game
+     * called repeatedly to advance the game
+     */
+    function main() {
+        // If the game ended return early to stop game
+        if (didGameEnd()) {
+            if (score > parseInt(document.getElementById('highScore').textContent)) {
+                document.getElementById('highScore').innerHTML = score;
+            }
+            document.getElementById('frmbGamePause').value = "Restart game";
+            document.getElementById('gameRunning').innerHTML = "over";
+        }
+
+        setTimeout(function onTick() {
+            if (document.getElementById('gameRunning').innerHTML == "running") {
+                changingDirection = false;
+                clearCanvas(0);
+                advanceSnake();
+                drawSnake();
+                drawFood();
+                drawBeacon();
+                clearCanvas(1);
+            }
+
+            // Call game again
+            main();
+        }, gamePulse)
+
+    }
+
+
+
+
+
+    /**
+     * Change the background colour of the canvas to CANVAS_BACKGROUND_COLOUR and
+     * draw a border around it
+     */
+    function clearCanvas(inOut) {
+        //  Select the colour to fill the drawing
+        ctx.fillStyle = CANVAS_BACKGROUND_COLOUR;
+        //  Select the colour for the border of the canvas
+        ctx.strokestyle = CANVAS_BORDER_COLOUR;
+
+        if (inOut == 0) {
+            // Draw a "filled" rectangle to cover the entire canvas
+            ctx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
+        }
+        else {
+            // Draw a "border" around the entire canvas
+            ctx.strokeRect(0, 0, gameCanvas.width, gameCanvas.height);
+        }
+    }
+
+    /**
+     * Draw the food on the canvas
+     */
+    function drawFood() {
+        ctx.fillStyle = FOOD_COLOUR;
+        ctx.strokestyle = FOOD_BORDER_COLOUR;
+        ctx.fillRect(foodX, foodY, 10, 10);
+        ctx.strokeRect(foodX, foodY, 10, 10);
+    }
+
+
+    function advanceSnake() {
+    /***************************************************************/
+	/* Advance snake by one part:                                  */
+	/* grow a new head from existing head at the current direction */
+    /***************************************************************/
+        // Create the new Snake's head
+        const head = { x: snake[0].x + dx, y: snake[0].y + dy};
+        snake.unshift(head); // unshift is a js method to insert an item to the beginning of an array, in this case the head
+                             // to the beginning of the array.
+
+	    // If new head on a spot with food, gain one body part by not having to pop the tail 
+        const didEatFood = snake[0].x === foodX && snake[0].y === foodY;
+        if (didEatFood) {
+            score += 10;  // Increase score
+            document.getElementById('score').innerHTML = score; // Display score on screen
+            createFood();  // Generate new food location
+            document.getElementById('gameSnakeLen').innerHTML = snake.length; // Display current snake length
+        }
+        else {
+            if (snake.length > snakeInitLengh) {
+                snake.pop(); // pop is a js method to remove last itesm from an array
+            }
+			else {
+				document.getElementById('gameSnakeLen').innerHTML = snake.length; // Display current snake length
+			}
+        }
+
+	    // If new head on sweat spot and moving up, plant a full set of beacons to make the snake sweep the canvas
+        if ((snake[0].x === 0) && (snake[0].y === 10)) { // this is the sweet spot to trigger auto beacons
+            if ((dy == -10)) {  // and only if the snake is moving up
+                if ((document.getElementById("gameBeacon").textContent == "auto") ||
+                    (document.getElementById("gameBeacon").textContent == "smart")) { // if auto beacon is on
+                    plantSureBeacons();  // planting of beacons may not be successful if food is on the beacon spots
+                }
+            }
+        }
+
+	    // check if new head on a beacon
+        var indexFound = -1;
+        beacon.forEach(function (part, i) {
+            if ((part.x === snake[0].x) && (part.y === snake[0].y)) {
+                indexFound = i;
+            }
+        });
+        if (indexFound >= 0) {  // beacon hit, change direction as indicated
+            const goingUp = dy === -10;
+            const goingDown = dy === 10;
+            const goingRight = dx === 10;
+            const goingLeft = dx === -10;
+            if (beacon[indexFound].t == "/") {
+                if (goingUp) { // then turn right
+                    dx = 10; dy = 0;
+                }
+                if (goingDown) { // then turn left
+                    dx = -10; dy = 0;
+                }
+                if (goingRight) { // then turn up
+                    dx = 0; dy = -10;
+                }
+                if (goingLeft) { // then turn down
+                    dx = 0; dy = +10;
+                }
+            }
+            else {
+                if (goingUp) { // then turn left
+                    dx = -10; dy = 0;
+                }
+                if (goingDown) { // then turn right
+                    dx = 10; dy = 0;
+                }
+                if (goingRight) { // then turn down
+                    dx = 0; dy = +10;
+                }
+                if (goingLeft) { // then turn up
+                    dx = 0; dy = -10;
+                }
+            }
+            beacon.splice(indexFound, 1); // drop the beacon
+        }
+		else {  // beacon not hit, check for right condition to change to smart beacons
+			if (document.getElementById("gameBeacon").textContent == "smart") { // and smart beacon is on, and ...
+			    // next enhancement: improve this logic and that of plantSmartBeacons so that the snake can eat all the food consecutively below it in one sweep
+				let snakeBott = snake[0].y;
+				for (let i = 1; i < snake.length; i++) { if (snake[i].y > snakeBott) snakeBott = snake[i].y }
+				if (snake[0].y >= snakeBott) { // .... and that no part of snake is below its head
+					if (((dx === 10) && (snake[0].x < foodX) && (snake[0].y < foodY)) ||  // snake is moving towards right, and food is below and ahead, or
+						((dx === -10) && (snake[0].x > foodX) && (snake[0].y < foodY)) || // snake is moving towards left, and food is below and ahead, or
+						(foodX == 0)) { // food is on left wall
+						plantSmartBeacons();
+					}
+				}
+			}
+        }
+
+    }
+
+    function didGameEnd() {
+    /******************************************************************************/
+	/* Returns true if the head of the snake touches itself or any of the walls   */
+    /******************************************************************************/
+        for (let i = 4; i < snake.length; i++) {
+            if (snake[i].x === snake[0].x && snake[i].y === snake[0].y) return true
+        }
+
+        if (snake[0].x < 0) { return true; } // hit left wall
+        if (snake[0].x > gameCanvas.width - 10) { return true; } // hit right wall
+        if (snake[0].y < 0) { return true; } // hit top wall
+        if (snake[0].y > gameCanvas.height - 10) { return true; } // hit bnttom wall;
+        return false;
+    }
+
+    function randomTen(min, max) {
+    /*************************************************************************/
+    /* Generates a random number that is a multiple of 10 given a minumum    */
+    /* and a maximum number                                                  */
+    /*************************************************************************/
+        return Math.round((Math.random() * (max - min) + min) / 10) * 10;
+    }
+
+    function createFood() {
+    /******************************************************************************/
+	/* Creates random set of coordinates for the snake food.                      */
+    /******************************************************************************/
+	/* a special feature is present here to allow manual planting of food at      */
+	/* designated position, to help debugging                                     */
+    /******************************************************************************/
+		let xTemp = xNextFood; // save a copy of pre-planted food 
+		let yTemp = yNextFood; //
+        let foundEmptySpot = true; // declare a flag for [an empty spot is found for food creation]
+        do {
+            // If a pre-planted food exists, try to use it
+			if (xNextFood == -1) { // no pre-planted food
+				foodX = randomTen(0, gameCanvas.width - 10); // so generate random food
+				foodY = randomTen(0, gameCanvas.height - 10);
+			}
+			else { // take out and use pre-planted food
+				foodX = xNextFood;
+				foodY = yNextFood;
+				xNextFood = -1;
+				yNextFood = -1;
+			}
+            foundEmptySpot = true;
+            // check if the new food location is where the snake currently is
+            snake.forEach(function (part) {
+                foundEmptySpot = (foundEmptySpot && ((part.x != foodX) || (part.y != foodY)));
+            });
+        } while (!foundEmptySpot);  // repeat until a new food location is determined.
+		if (xTemp != -1) { // there was a pre-planted food
+			if ((xTemp == foodX) && (yTemp == foodY)) {
+				console.log("pre-planted food at x:" + foodX + ", y:", foodY + " deployed.");
+			}
+			else {
+				console.log("pre-planted food at x:" + xTemp + ", y:", yTemp + " discarded.");
+			}
+			chgGameOption('P'); // pause the game
+		}
+    }
+
+
+    function drawSnake() {
+    /******************************************************************************/
+	/* Draw the snake part by part on the canvas                                  */
+    /******************************************************************************/
+        // Draw a rectangle to represent the headlight of snake
+        if (document.getElementById("gameHeadLight").textContent == "on") {
+            ctx.fillStyle = SNAKE_HEADLIGHT;
+            if (dy === -10) { ctx.fillRect(snake[0].x, 0, 10, snake[0].y); }  // goingUp
+            if (dy === 10) {ctx.fillRect(snake[0].x, snake[0].y + 10, 10, gameCanvas.height - snake[0].y + 10); } // goingDown) 
+            if (dx === -10) {ctx.fillRect(0, snake[0].y, snake[0].x, 10);}  // going left
+            if (dx === 10) { ctx.fillRect(snake[0].x + 10, snake[0].y, gameCanvas.width - snake[0].x + 10, 10); } // going right
+        }
+        // loop through the snake parts drawing each part on the canvas
+        // snake.forEach(drawSnakePart);
+        snake.forEach(drawSnakePart);
+    }
+
+    function drawSnakePart(snakePart, i) {
+    /******************************************************************************/
+	/* for each snake body part, fill a rectangle with one of three colors        */
+	/* and wrap borders around sides not adjacent to another body part.           */
+    /******************************************************************************/
+        // Set the colour of the snake part
+        if (i == 0) {
+            ctx.fillStyle = SNAKE_COLOURH;
+        }
+        else { switch (i % 3) {
+            case 0:
+                ctx.fillStyle = SNAKE_COLOUR0;
+                break;
+            case 1:
+                ctx.fillStyle = SNAKE_COLOUR1;
+                break;
+            case 2:
+                ctx.fillStyle = SNAKE_COLOUR2;
+                break;
+            }
+        }
+
+        // Set the border colour of the snake part
+        ctx.strokestyle = SNAKE_BORDER_COLOUR;
+        
+        ctx.fillRect(snakePart.x, snakePart.y, 10, 10);
+        if (i == 0) { //Draw a border around the snake head
+			ctx.strokeRect(snakePart.x, snakePart.y, 10, 10);
+			}
+		else { 
+			if (i == (snake.length - 1)) { //Draw 3 lines around the snake tail
+				ctx.beginPath();
+				if (snake[i].x == snake[i-1].x) {
+					if (snake[i].y < snake[i-1].y) {  // tail joined to tbe body below
+						ctx.moveTo(snake[i].x, snake[i].y + 10);
+						ctx.lineTo(snake[i].x, snake[i].y);
+						ctx.lineTo(snake[i].x + 10, snake[i].y);
+						ctx.lineTo(snake[i].x + 10, snake[i].y + 10);
+					}
+					else { // tail joined to tbe body above
+						ctx.moveTo(snake[i].x, snake[i].y);
+						ctx.lineTo(snake[i].x, snake[i].y + 10);
+						ctx.lineTo(snake[i].x + 10, snake[i].y + 10);
+						ctx.lineTo(snake[i].x + 10, snake[i].y );
+					}
+				}
+				else {
+					if (snake[i].x < snake[i-1].x) { // tail joined to tbe body to the right
+						ctx.moveTo(snake[i].x + 10, snake[i].y);
+						ctx.lineTo(snake[i].x, snake[i].y);
+						ctx.lineTo(snake[i].x, snake[i].y + 10);
+						ctx.lineTo(snake[i].x + 10, snake[i].y + 10);
+					}
+					else { // tail joined to tbe body to the left
+						ctx.moveTo(snake[i].x, snake[i].y);
+						ctx.lineTo(snake[i].x + 10, snake[i].y);
+						ctx.lineTo(snake[i].x + 10, snake[i].y + 10);
+						ctx.lineTo(snake[i].x, snake[i].y + 10);
+					}
+				}
+				ctx.strokeStyle = SNAKE_BORDER_COLOUR;
+				ctx.stroke();
+			}
+			else {  // the the rest of the snake, only draw the two side-lines
+				if ((snake[i+1].y >= snake[i].y) && (snake[i-1].y >= snake[i].y)) { // adjecent segment not above me
+					ctx.beginPath();                                              // draw top border
+					ctx.moveTo(snake[i].x, snake[i].y);
+					ctx.lineTo(snake[i].x +10, snake[i].y);
+					ctx.strokeStyle = SNAKE_BORDER_COLOUR;
+					ctx.stroke();
+				}
+				
+				if ((snake[i+1].x <= snake[i].x) && (snake[i-1].x <= snake[i].x)) { // adjecent segment not to my right
+					ctx.beginPath();                                              // draw right border
+					ctx.moveTo(snake[i].x +10, snake[i].y);
+					ctx.lineTo(snake[i].x +10, snake[i].y + 10);
+					ctx.strokeStyle = SNAKE_BORDER_COLOUR;
+					ctx.stroke();
+				}
+				
+				if ((snake[i+1].y <= snake[i].x) && (snake[i-1].y <= snake[i].y)) { // adjecent segment not below me
+					ctx.beginPath();                                                // draw bottom border
+					ctx.moveTo(snake[i].x +10, snake[i].y +10);
+					ctx.lineTo(snake[i].x, snake[i].y +10);
+					ctx.strokeStyle = SNAKE_BORDER_COLOUR;
+					ctx.stroke();
+				}
+				
+				if ((snake[i+1].x >= snake[i].x) && (snake[i-1].x >= snake[i].x)) { // adjecent segment not to my left
+					ctx.beginPath();                                              // draw left border
+					ctx.moveTo(snake[i].x, snake[i].y +10);
+					ctx.lineTo(snake[i].x, snake[i].y);
+					ctx.strokeStyle = SNAKE_BORDER_COLOUR;
+					ctx.stroke();
+				}
+			}
+		}
+    }
+
+    function plantSureBeacons() {
+    /******************************************************************************/
+	/* snake is currently at sweat spot and moving up, good time to plant the set */
+	/* of prepared beacons to lead the snake to sweep the canvas                  */
+    /******************************************************************************/
+        beacon = beaconAssured.slice(0);
+        return true;
+    }
+
+
+
+    function plantSmartBeacons() {
+    /************************************************************************/
+    /* Construct a set of beacons to quickly lead to snake to eat the food, */
+	/* and then cycle to sweat-spot                                         */
+    /************************************************************************/
+        beaconSmart = beaconSmart.slice(0,0);
+        if (dx == 10) { // moving right
+			if (foodX === 0) { // and food is on the left wall
+				beaconSmart.push({ x: snake[0].x +10, y: snake[0].y, t: "\\" });
+				beaconSmart.push({ x: snake[0].x +10, y: Math.max(30,snake[0].y+10,foodY), t: "/" });
+				beaconSmart.push({ x: 0, y: Math.max(30,snake[0].y+10,foodY), t: "\\" });
+				}
+			else {  // otherwise it must be on the right
+				beaconSmart.push({ x: foodX, y: snake[0].y, t: "\\" });
+				beaconSmart.push({ x: foodX, y: Math.max(30,foodY), t: "/" });
+				beaconSmart.push({ x: 0, y: Math.max(30,foodY), t: "\\" });
+			}
+        }
+        else { // moving left
+			if (foodX === 0) { // but if food is on left wall
+				if (snake[0].x > 10) { // check there is enough room to turn
+					beaconSmart.push({ x: 10, y: snake[0].y, t: "/" });
+					beaconSmart.push({ x: 10, y: Math.max(30,snake[0].y+10,foodY), t: "/" });
+					beaconSmart.push({ x: 0, y: Math.max(30,snake[0].y+10,foodY), t: "\\" });
+				}
+				else { 
+					beaconSmart.push({ x: 10, y: Math.max(30,foodY,snake[0].y+10), t: "/" });
+					beaconSmart.push({ x: 0, y: Math.max(30,foodY,snake[0].y+10), t: "\\" });
+				}
+			}	
+			else {
+				beaconSmart.push({ x: foodX, y: snake[0].y, t: "/" });
+				beaconSmart.push({ x: foodX, y: Math.max(30,foodY), t: "/" });
+				beaconSmart.push({ x: 0, y: Math.max(30,foodY), t: "\\" });
+			}
+        }
+		beacon = beaconSmart.slice(0);
+		return true;
+    }
+
+    /************************************************************************/
+    /* Redraw all beacons on the canvas                                     */
+    /************************************************************************/
+    function drawBeacon() {
+        // loop through the beacon parts drawing each part on the canvas
+        if (drawBeacons > 0) {
+            beacon.forEach(drawBeaconPart)
+        }
+    }
+
+    function drawBeaconPart(beaconPart) {
+        // Set the colour of the beacon part
+        ctx.fillStyle = BEACON_COLOUR;
+        ctx.strokestyle = BEACON_BORDER_COLOUR;
+
+        // Draw two sets of edge to edge cross lines centered from the becon
+        if (drawBeacons == 2) {
+            ctx.beginPath();
+            ctx.moveTo(0, beaconPart.y);
+            ctx.lineTo(gameCanvas.width, beaconPart.y);
+            ctx.moveTo(0, beaconPart.y + 10);
+            ctx.lineTo(gameCanvas.width, beaconPart.y + 10);
+            ctx.moveTo(beaconPart.x, 0);
+            ctx.lineTo(beaconPart.x, gameCanvas.height);
+            ctx.moveTo(beaconPart.x + 10, 0);
+            ctx.lineTo(beaconPart.x + 10, gameCanvas.height);
+            ctx.strokeStyle = BEACON_BORDER_COLOUR;
+            ctx.stroke();
+        }
+        ctx.beginPath();
+        if (beaconPart.t == "/") {
+            ctx.moveTo(beaconPart.x + 10, beaconPart.y);
+            ctx.lineTo(beaconPart.x, beaconPart.y + 10);
+        }
+        else {
+            ctx.moveTo(beaconPart.x, beaconPart.y);
+            ctx.lineTo(beaconPart.x + 10, beaconPart.y + 10);
+        }
+        ctx.strokeStyle = BEACON_BORDER_COLOUR;
+        ctx.stroke();
+
+    }
+
+
+    function mouseClick(event) {
+        const canvasX = gameCanvas.offsetLeft - (gameCanvas.width / 2);
+        const canvasY = gameCanvas.offsetTop - (gameCanvas.height / 2);
+        var xMouse = event.clientX;
+        var yMouse = event.clientY;
+        var xBeacon = Math.floor((xMouse - canvasX) / 10) * 10;
+        var yBeacon = Math.floor((yMouse - canvasY) / 10) * 10;
+
+		/* This is for manual food planting, a hidden feature */
+		/* when game is paused, allow next food to be planted. */
+		console.log("Mouse click detected  x:" + xBeacon + " y:"+ yBeacon +".");
+		if (document.getElementById('gameRunning').innerHTML == "paused") {
+			xNextFood = xBeacon;
+			yNextFood = yBeacon;
+			console.log("Debug food planted at x:" + xNextFood + " y:"+ yNextFood +".");
+			return;
+		}
+
+		if (document.getElementById("gameBeacon").textContent == "off") {
+            return;
+        }
+
+        // check if new positiion already has a beacon
+        var indexFound = -1;
+        beacon.forEach(function (part, i) {
+            if ((part.x === xBeacon) && (part.y === yBeacon)) {
+                indexFound = i;
+            }
+        })
+        if (indexFound != -1) { // if the beacon posiition already has a beacon, cycle it through /, \, and drop
+            if (beacon[indexFound].t == "/") {
+                beacon[indexFound].t = "\\";
+            }
+            else {
+                beacon.splice(indexFound, 1);  // remove found items in the array
+            }
+        }
+        else {
+            const newBeacon = { x: xBeacon, y: yBeacon, t: "/" };
+            beacon.push(newBeacon);
+        }
+    }
+
+
+    function chgGameOption(charOption) {
+        if (charOption == "S") {
+            if (gamePulse >= 50) {
+                gamePulse = gamePulse + 50;
+            }
+            else {
+                gamePulse = gamePulse + 10;
+            }
+            document.getElementById("gameSpeed").textContent = gamePulse;
+        }
+
+        if (charOption == "F") {
+            if (gamePulse >= 100) {
+                gamePulse = gamePulse - 50;
+            }
+            else {
+                if (gamePulse >= 10) {
+                    gamePulse = gamePulse - 10;
+                }
+            }
+            document.getElementById("gameSpeed").textContent = gamePulse;
+        }
+
+        if (charOption == "P") {
+            switch (document.getElementById("gameRunning").innerHTML) {
+                case "running":
+                    document.getElementById('frmbGamePause').value = "Resume game";
+                    document.getElementById('gameRunning').innerHTML = "paused";
+                    break;
+                case "paused":
+                    document.getElementById('frmbGamePause').value = "Pause game";
+                    document.getElementById('gameRunning').innerHTML = "running";
+                    break;
+                case "over":
+                    document.getElementById('frmbGamePause').value = "Pause game";
+                    document.getElementById('gameRunning').innerHTML = "running";
+                    initGame();
+                    break;
+            }
+        }
+
+        if (charOption == "H") {
+            if (document.getElementById("gameHeadLight").textContent == "on") {
+                document.getElementById("gameHeadLight").textContent = "off"
+            }
+            else {
+                document.getElementById("gameHeadLight").textContent = "on"
+            }
+        }
+
+        if (charOption == "B") { // upgrade beacon usage
+            switch (document.getElementById("gameBeacon").textContent) {
+                case "off":
+                    document.getElementById("gameBeacon").textContent = "on";
+                    break;
+                case "on":
+                    document.getElementById("gameBeacon").textContent = "auto";
+                    break;
+                case "auto":
+                    document.getElementById("gameBeacon").textContent = "smart";
+                    break;
+            }
+        }
+
+        if (charOption == "b") {
+            switch (document.getElementById("gameBeacon").textContent) {
+                case "smart":
+                    document.getElementById("gameBeacon").textContent = "auto";
+                    break;
+                case "auto":
+                    document.getElementById("gameBeacon").textContent = "on";
+                    break;
+                case "on":
+                    document.getElementById("gameBeacon").textContent = "off";
+                    break;
+            }
+        }
+
+        if (charOption == "D") {
+            switch (drawBeacons) {
+                case 0:
+                    drawBeacons = 1;
+                    document.getElementById("gameDrawBeacon").textContent = "are";
+                    break;
+                case 1:
+                    drawBeacons = 2;
+                    document.getElementById("gameDrawBeacon").textContent = "and guidelines are";
+                    break;
+            }
+        }
+
+        if (charOption == "d") {
+            switch (drawBeacons) {
+                case 2:
+                    drawBeacons = 1;
+                    document.getElementById("gameDrawBeacon").textContent = "are";
+                    break;
+                case 1:
+                    drawBeacons = 0;
+                    document.getElementById("gameDrawBeacon").textContent = "are not";
+                    break;
+            }
+        }
+
+
+        if ((charOption == "+") || (charOption == "-")) {
+            let numLength = parseInt(document.getElementById("gameSnake").textContent)
+
+            if (charOption == "+") {
+                if (numLength < 3600) {
+                    if (numLength >= 100) {
+                        numLength = numLength + 50;
+                    }
+                    else {
+                        if (numLength >= 50) {
+                            numLength = numLength + 10;
+                        }
+                        else {
+                            if (numLength >= 15) {
+                                numLength = numLength + 5;
+                            }
+                            else {
+                                numLength = numLength + 1;
+                            }
+                        }
+                    }
+
+                }
+            }
+            if (charOption == "-") {
+                if (numLength > 100) {
+                    numLength = numLength - 50;
+                }
+                else {
+                    if (numLength > 50) {
+                        numLength = numLength - 10;
+                    }
+                    else {
+                        if (numLength > 15) {
+                            numLength = numLength - 5;
+                        }
+                        else {
+                            if (numLength > 1) {
+                                numLength = numLength - 1
+                            }
+                        }
+                    }
+                }
+            }
+            snakeInitLengh = numLength;
+            document.getElementById("gameSnake").textContent = numLength;
+        }
+
+    }
+
+
+    function initSureBeacons() { // create a copy of full canvas sweeping beacons
+        // first clear the beacon template
+        while (beaconAssured.length > 0) { beaconAssured.pop(); }
+        var newBeacon = { x: 0, y: 0, t: "/" };
+        beaconAssured.push(newBeacon);
+        var newBeacon = { x: gameCanvas.width - 10, y: 0, t: "\\" };
+        beaconAssured.push(newBeacon);
+        var strBouncer = "/";
+        for (let i = 1; i < (gameCanvas.height - 10) / 10; i++) {
+            newBeacon = { x: 10, y: i * 10, t: strBouncer };
+            beaconAssured.push(newBeacon);
+            newBeacon = { x: gameCanvas.width - 10, y: i * 10, t: strBouncer };
+            beaconAssured.push(newBeacon);
+            if (strBouncer == "\\") {
+                strBouncer = "/";
+            }
+            else {
+                strBouncer = "\\"
+            }
+        }
+        newBeacon = { x: 0, y: gameCanvas.height - 10, t: "\\" };
+        beaconAssured.push(newBeacon);
+        newBeacon = { x: gameCanvas.width - 10, y: gameCanvas.height - 10, t: "/" };
+        beaconAssured.push(newBeacon);
+    }
+
+
+
+    function initGame() {
+        snake = [
+            { x: 0, y: 0 }
+        ];
+        beacon = [
+            { x: gameCanvas.width - 10, y: 0,   t: "\\" },
+            { x: gameCanvas.width - 10, y: gameCanvas.height - 10, t: "/" },
+            { x: 0,   y: gameCanvas.height - 10, t: "\\" }
+        ];
+        if (document.getElementById("gameBeacon").textContent == "off") {
+			beacon = beacon.slice(0,0);
+        }
+        snakeInitLengh = parseInt(document.getElementById("gameSnake").textContent);
+
+        score = 0;
+        changingDirection = false;
+        dx = 10; // Horizontal velocity
+        dy = 0;// Vertical velocity
+        
+        document.getElementById('score').innerHTML = score;
+        document.getElementById('gameRunning').innerHTML = "running";
+    }
+
+
+
+    /********************************************************************/
+    /* Handle Left/Right arrows to turn the snake to turn left or right */
+    /* and Up/Down arrows speed up or slow down snake advances.         */
+    /********************************************************************/
+    function changeDirection(event) {
+        const LEFT_KEY = 37;
+        const RIGHT_KEY = 39;
+        const UP_KEY = 38;
+        const DOWN_KEY = 40;
+        if (changingDirection) return;
+        changingDirection = true;
+
+        const keyPressed = event.keyCode;
+
+        const goingUp = dy === -10;
+        const goingDown = dy === 10;
+        const goingRight = dx === 10;
+        const goingLeft = dx === -10;
+
+        if (keyPressed === LEFT_KEY) {
+            if (goingUp)    { dx = -10; dy = 0;  }
+            if (goingRight) { dx = 0;   dy = -10;}
+            if (goingDown)  { dx = 10;  dy = 0;  }
+            if (goingLeft)  { dx = 0;   dy = 10; }
+        }
+        if (keyPressed === RIGHT_KEY) {
+            if (goingUp)    { dx = 10;  dy = 0;  }
+            if (goingRight) { dx = 0;   dy = 10; }
+            if (goingDown)  { dx = -10; dy = 0;  }
+            if (goingLeft)  { dx = 0;   dy = -10;}
+        }
+
+        if (keyPressed === UP_KEY) {
+            chgGameOption('F');
+        }
+        if (keyPressed === DOWN_KEY) {
+            chgGameOption('S');
+        }
+    }</script>
+</html>

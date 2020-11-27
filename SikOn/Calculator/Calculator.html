@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="styles/site.css" rel="stylesheet" />
+    <script src="scripts/JavaScript.js"></script>
+    <title>Calculator</title>
+</head>
+<body>
+    <form>
+        <table>
+            <tr>
+                <th colspan="5">Memory<input id="frmtMemory" value="" readonly /></th>
+                <th rowspan="13">
+                    <textarea id="frmtCLOG" cols="40" value="" style="        overflow-y: scroll; height: 280px; text-align: right;"></textarea>
+            </tr>
+
+            </tr>
+            <tr>
+                <th colspan="5" id="thRegister" class="hidden">Register<input id="frmtRegister" value="" style="text-align:right;" readonly /></th>
+            </tr>
+            <tr>
+                <th colspan="5" id="thOper" class="hidden">Pending operation<input id="frmtOper" type="text" value="" readonly /></th>
+            </tr>
+            <tr>
+                <th colspan="5">Display<input id="frmtDisplay" type="text" value="0" style="text-align:right;" readonly /></th>
+            </tr>
+            <tr>
+                <th colspan="5" id="thShadow" class="hidden"><input id="frmtShadow" value="" /></th>
+            </tr>
+            <tr>
+                <th><input id="frmbMS" type="button" value="MS" onclick="jsButtMem('S');" /></th>
+                <th><input id="frmbMP" type="button" value="M+" onclick="jsButtMem('+');" /></th>
+                <th><input id="frmbMM" type="button" value="M-" onclick="jsButtMem('-');" /></th>
+                <th><input id="frmbMR" type="button" value="MR" onclick="jsButtMem('R');" /></th>
+                <th><input id="frmbMC" type="button" value="MC" onclick="jsButtMem('C');" /></th>
+            </tr>
+            <tr>
+                <th colspan="2"><input id="frmbCA" type="button" value="CA" onclick="jsButtClear('A');" /></th>
+                <th colspan="1"><input id="frmbCE" type="button" value="CE" onclick="jsButtClear('E');" /></th>
+                <th colspan="2"><input id="frmbBS" type="button" value="Back Space" onclick="jsButtBS();" /></th>
+            </tr>
+            <tr>
+                <th><input id="frmb7" type="button" value="7" onclick="jsButtDigit('7');" /></th>
+                <th><input id="frmb8" type="button" value="8" onclick="jsButtDigit('8');" /></th>
+                <th><input id="frmb9" type="button" value="9" onclick="jsButtDigit('9');" /></th>
+                <th><input id="frmbADD" type="button" value="+" onclick="jsButtOPER('+');" /></th>
+                <th><input id="frmbPcnt" type="button" value="%" onclick="jsButtIOPER('%');" /></th>
+            </tr>
+            <tr>
+                <th><input id="frmb4" type="button" value="4" onclick="jsButtDigit('4');" /></th>
+                <th><input id="frmb5" type="button" value="5" onclick="jsButtDigit('5');" /></th>
+                <th><input id="frmb6" type="button" value="6" onclick="jsButtDigit('6');" /></th>
+                <th><input id="frmbMINU" type="button" value="-" onclick="jsButtOPER('-')" ; /></th>
+                <th><input id="frmbRcpl" type="button" value="1/x" onclick="jsButtIOPER('1');" /></th>
+            </tr>
+            <tr>
+                <th><input id="frmb1" type="button" value="1" onclick="jsButtDigit('1');" /></th>
+                <th><input id="frmb2" type="button" value="2" onclick="jsButtDigit('2');" /></th>
+                <th><input id="frmb3" type="button" value="3" onclick="jsButtDigit('3');" /></th>
+                <th><input id="frmbMULT" type="button" value="*" onclick="jsButtOPER('*')" ; /></th>
+                <th><input id="frmbSqr" type="button" value="x²" onclick="jsButtIOPER('2');" /></th>
+            </tr>
+            <tr>
+                <th><input id="frmbPeriod" type="button" value="." onclick="jsButtPeriod('.');" /></th>
+                <th><input id="frmb0" type="button" value="0" onclick="jsButtDigit('0');" /></th>
+                <th><input id="frmbFLIP" type="button" value="+/-" onclick="jsButtFLIP();" /></th>
+                <th><input id="frmbDIVI" type="button" value="/" onclick="jsButtOPER('/')" ; /></th>
+                <th><input id="frmbSqrt" type="button" value="₂√" onclick="jsButtIOPER('r');" /></th>
+            </tr>
+            <tr>
+                <th><input id="frmbCLOG" type="button" value="Calc Log" onclick="jsButtSLOG('C');" /></th>
+                <th><input id="frmbMLOG" type="button" value="Memo Log" onclick="jsButtSLOG('M');" /></th>
+                <th colspan="3"><input id="frmbEQU" type="button" value="=" onclick="jsButtOPER('=');" /></th>
+            </tr>
+            <tr>
+                <th colspan="5"><textarea id="frmtMLOG" rows="20" cols="40" value="" hidden style="overflow-y: scroll; height: 100px;  text-align:right;"></textarea></th>
+            </tr>
+        </table>
+    </form>
+    <audio id="myAudio">
+        <source src="beep.mp3" type="audio/mpeg">
+    </audio>
+</body>
+</html>

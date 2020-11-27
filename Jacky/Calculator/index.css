@@ -1,0 +1,156 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+    font-size: inherit;
+    color: white;
+}
+
+.calculator {
+    display: flex;
+    position:relative;
+    height: 580px;
+    width: 800px;
+    background-color: rgba(32, 32, 32, 0.671);
+    margin: auto;
+    top: 100px;
+}
+
+.mainContainer {
+    position: relative;
+    top: 15px;
+    width: 500px;
+    height: 600px;
+}
+
+.rightContainer {
+    position: relative;
+    top: 10px;
+    height: 526px;
+    width: 293px;
+    font-size: 30px;
+    text-align: right;
+}
+
+#memoryContainer {
+    display: none;
+    overflow: scroll;
+}
+
+.arrayIndex{
+    display: none;
+}
+
+#showInput {
+    width: 98%;
+    height: 70px;
+    margin: auto;
+    font-size: 60px;
+    text-align: right;
+}
+
+.inputContainer{
+    display: flex;
+    width: 98%;
+    margin: auto;
+    height: 500px;
+}
+
+.numPadContainer {
+    display: inline-flex;
+    width: 100%;
+    height: 400px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.numPadContainer span {
+    text-align: center;
+    box-sizing: border-box;
+    border: 1px solid rgba(145, 145, 145, 0.671);
+}
+
+.input {
+    font-size: 30px;
+    width: 25%;
+    line-height: 100px;
+    background-color: black;
+}
+
+.input:hover {
+    background-color: rgba(139, 139, 139, 0.671);
+}
+
+.function {
+    font-size: 30px;
+    width: 25%;
+    line-height: 100px;
+    background-color: black;
+}
+
+.memory {
+    line-height: 80px;
+    width: 20%;
+    font-size: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+span:hover {
+    cursor: pointer;
+    background-color: rgba(139, 139, 139, 0.671);
+}
+
+.historyContainer {
+    top: 5px;
+    position: relative;
+}
+
+.historyHeader {
+    display: flex;
+}
+
+.historyHeader h4 {
+    font-size: 20px;
+    margin-right: 20px;
+    font-weight: normal;
+    padding-bottom: 5px;
+}
+
+.historyHeader h4:hover{
+    cursor: pointer;
+    color: rgb(175, 175, 175);
+}
+
+.activeHeader {
+    border-bottom: 5px solid grey;
+}
+
+.memoryContent {
+    font-size: 25px;
+    height: 80px;
+    width: 100%;
+    padding: 10px 30px 10px 0px;
+    box-sizing: border-box;
+    text-align: right;
+}
+
+.memoryContent:hover {
+    background-color: rgba(78, 78, 78, 0.5);
+}
+
+.memoryButtonRow span{
+    display: inline-block;
+    font-size: 12px;
+    background-color: black;
+    height: 30px;
+    width: 40px;
+    text-align: center;
+    line-height: 30px;
+    font-weight: bold;
+}
+
+.memoryButtonRow span:hover{
+    cursor: pointer;
+    background-color: rgb(175, 175, 175);
+}
