@@ -1,0 +1,58 @@
+USE onebank;
+
+ 
+
+CREATE TABLE IF NOT EXISTS chqReg_bak LIKE chqReg;
+
+ 
+
+INSERT chqReg_bak SELECT * FROM chqReg; 
+
+ 
+
+DROP TABLE chqReg;
+
+ 
+
+Create TABLE chqReg (
+
+   AcctNum     varchar(10),
+
+   StrChqNum   int NOT NULL,
+
+   EndChqNum   int NOT NULL,
+
+   DateIss     date NOT NULL,
+
+   UsedCnt     int NOT NULL,
+
+   LastChq    date NULL
+
+);
+
+ 
+
+INSERT chqReg
+
+SELECT
+
+   AcctNum,
+
+   StrChqNum,
+
+   EndChqNum,
+
+   DateIss,
+
+   ChqUsed,
+
+   LastChq
+
+FROM chqReg_bak;
+
+ 
+
+DROP TABLE chqReg_bak;
+
+
+

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+
+<TableView fx:id="cListTbl" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="t1customerapp.cListController">
+    <columns>
+        <TableColumn fx:id="custID" prefWidth="136.0" text="Cust ID" />
+        <TableColumn fx:id="custName" prefWidth="388.0" text="Name" />
+        <TableColumn fx:id="NRIC" prefWidth="211.0" text="NRIC" />
+        <TableColumn fx:id="addr1" prefWidth="176.0" text="Address 1" />
+        <TableColumn fx:id="addr2" prefWidth="191.0" text="Address 2" />
+      <TableColumn fx:id="addr3" prefWidth="191.0" text="Address 3" />
+      <TableColumn fx:id="addr4" prefWidth="75.0" text="Address 4" />
+      <TableColumn fx:id="custStts" prefWidth="177.0" text="Status" />
+    </columns>
+</TableView>

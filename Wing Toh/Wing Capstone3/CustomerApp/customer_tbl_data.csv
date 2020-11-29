@@ -1,0 +1,8 @@
+"custID";"custName";"DOB";"Picture";"email";"active";"phoneNo"
+1;"ChandraSekhar";"2020-10-10";"";"chandra@ajancs.com";1;"123456789"
+2;"Steve Jobs";"2001-01-01";"";"steve@apple.com";1;"12341234"
+3;"Humpty Dumpty";"1967-01-01";"";"humpty@dumpty.com";1;"283728378"
+4;"Donald Trump";"1940-01-01";"";"donald@putin.com";1;"911911911"
+5;"Tennis Ball";"1977-11-28";"";"tennis@open.org";1;"2312312312"
+7;"Joe Biden";"1940-09-08";"";"joebiden@usa.gov";1;"119119119"
+8;"From GUI";"2013-11-07";"";"gui@from.com";1;"23872837823"

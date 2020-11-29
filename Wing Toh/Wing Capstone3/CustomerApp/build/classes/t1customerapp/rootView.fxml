@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<TabPane fx:id="bankCustomer" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"  fx:controller="t1customerapp.RootPaneController">
+    <tabs>
+     
+        <Tab fx:id="cOpsRef" text="Customer Ops">
+            <fx:include fx:id="cOps" source="cOps.fxml" />
+        </Tab>   
+        <Tab fx:id="cListRef" text="Customer List">
+            <fx:include fx:id="cList" source="cList.fxml" />
+        </Tab>
+    </tabs>
+</TabPane>
